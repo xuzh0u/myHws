@@ -1,0 +1,273 @@
+\documentclass[12pt, a4paper, oneside]{ctexart}
+\usepackage{amsmath, amsthm, amssymb, bm, color, framed, graphicx, hyperref, mathrsfs}
+\usepackage{geometry}
+\geometry{left=2.54cm,right=2.54cm,top=3.18cm,bottom=3.18cm}
+\title{\textbf{数理逻辑作业: lianxi4}}
+\author{hsuchou}
+\date{\today}
+\linespread{1.4}
+\definecolor{shadecolor}{RGB}{240,249,254}
+\newcounter{problemname}
+\newenvironment{problem}{\begin{shaded}\stepcounter{problemname}\par\noindent\textbf{题目\arabic{problemname}. }}{\end{shaded}\par}
+\newenvironment{solution}{\par\noindent\textbf{解答. }}{\par}
+\newenvironment{note}{\par\noindent\textbf{题目\arabic{problemname}的注记. }}{\par}
+\newcounter{lemmaname}
+\newenvironment{lemma}{\stepcounter{lemmaname}\par\noindent\textbf{引理\arabic{lemmaname}. }}{\par}
+
+\begin{document}
+\maketitle
+
+\subsection*{0. 引理}
+\begin{lemma}
+(逆否) 
+\begin{align*}
+    \text{if }A\vdash B,\text{ then } \neg B\vdash \neg A.
+\end{align*}
+\begin{proof}
+    \begin{align*}
+        \neg B, A&\vdash \neg B &(\in)\\
+        A&\vdash B &(\text{assumption})\\
+        \neg B, A &\vdash B &(+)\\
+        \neg B&\vdash \neg A &(\neg^-)
+    \end{align*}
+\end{proof}
+\end{lemma}
+\begin{lemma}
+\begin{align*}
+    \neg(A\rightarrow B)\vdash A\land \neg B.
+\end{align*}
+\begin{proof}
+    \begin{align*}
+        \neg A, A, \neg B&\vdash A&(\in)\\
+        \neg A, A, \neg B&\vdash\neg A&(\in)\\
+        \neg A, A&\vdash B&(\neg^-)\\
+        \neg A&\vdash A\rightarrow B&(\rightarrow^+)\\
+        B, A&\vdash B&(\in)\\
+        B&\vdash A\rightarrow B&(\rightarrow^+)\\
+        \neg(A\rightarrow B)&\vdash\neg B &(\text{逆否})\\
+        \neg(A\rightarrow B)&\vdash A &(\text{逆否})\\
+        \neg(A\rightarrow B)&\vdash A\land\neg B &(\land^+)
+    \end{align*}
+\end{proof}
+\end{lemma}
+\begin{lemma}
+($\neg\neg^-$)
+\begin{align*}
+    \neg\neg A\vdash A
+\end{align*}
+\begin{proof}
+    \begin{align*}
+        \neg\neg A,\neg A&\vdash\neg A&(\in)\\
+        \neg\neg A,\neg A&\vdash\neg\neg A&(\in)\\
+        \neg\neg A&\vdash A&(\neg^-)
+    \end{align*}
+\end{proof}
+
+\end{lemma}
+
+\subsection*{1. Using the natural deduction rules to prove the following statements}
+\begin{problem}
+\begin{equation*}
+    \neg\exists x A(x)
+    \vdash\dashv
+    \forall x \neg A(x).
+\end{equation*}
+\end{problem}
+\begin{solution}
+    先证 $\vdash$：
+    \begin{align*}
+        A(u)&\vdash A(u) &(\text{ref})\\
+        A(u)&\vdash \exists x A(x)  &(\exists^+, x\text{不在}A(u)\text{中出现})\\
+        \neg \exists x A(x)&\vdash \neg A(u) &(\text{逆否}) \\
+        \neg\exists x A(x)&\vdash\forall x \neg A(x)
+        &(\forall^+,x\text{不在}A(u)\text{中自由出现})
+    \end{align*}
+    后证 $\dashv$：
+    \begin{align*}
+        \forall x\neg A(x)&\vdash\forall x \neg A(x)&(\text{ref})\\
+        \forall x\neg A(x)&\vdash \neg A(u) &(\forall^-)\\
+        A(u)&\vdash \neg \forall x\neg A(x)&(\text{逆否})\\
+        \exists xA(x)&\vdash\neg \forall x\neg A(x)
+        &(\exists^-,u\text{不在}\neg\forall x\neg A(x)\text{出现})\\
+        \forall x \neg A(x), \exists xA(x)&\vdash
+        \neg \forall x\neg A(x)&(+)\\
+        \forall x \neg A(x), \exists xA(x)&\vdash
+        \forall x \neg A(x)&(\in)\\
+        \forall x \neg A(x)&\vdash \neg\exists x A(x)&(\neg^-)
+    \end{align*}
+    综上，该statement成立。
+\end{solution}
+\begin{problem}
+\begin{equation*}
+    \exists xA(x)\rightarrow B
+    \vdash\dashv
+    \forall x(A(x)\rightarrow B),
+\end{equation*}
+where $x$ does not occur in $B$.
+\end{problem}
+\begin{solution}
+    先证 $\vdash$：
+    \begin{align*}
+        \exists xA(x)\rightarrow B, A(u)
+        &\vdash A(u)
+        &(\in)\\
+        \exists xA(x)\rightarrow B, A(u)
+        &\vdash \exists xA(x)
+        &(\exists^+)\\
+        \exists xA(x)\rightarrow B, A(u)
+        &\vdash \exists xA(x)\rightarrow B
+        &(\in)\\
+        \exists xA(x)\rightarrow B, A(u)
+        &\vdash B
+        &(\rightarrow^-)\\
+        \exists xA(x)\rightarrow B 
+        &\vdash A(u)\rightarrow B
+        &(\rightarrow^+)\\
+        \exists xA(x)\rightarrow B 
+        &\vdash \forall x(A(x)\rightarrow B)
+        &(\forall^+, u\text{不在}\exists xA(x)\rightarrow B\text{中出现})
+    \end{align*}
+    后证 $\dashv$：
+    \begin{align*}
+        \forall x(A(x)\rightarrow B)&\vdash
+        \forall x(A(x)\rightarrow B)&(\text{ref})\\
+        \forall x(A(x)\rightarrow B)
+        &\vdash A(u)\rightarrow B &(\forall^-)\\
+        \forall x(A(x)\rightarrow B), A(u)
+        &\vdash A(u)\rightarrow B &(+)\\
+        \forall x(A(x)\rightarrow B), A(u)
+        &\vdash A(u) &(\in)\\
+        \forall x(A(x)\rightarrow B), A(u)
+        &\vdash B &(\rightarrow^-)\\
+        \forall x(A(x)\rightarrow B), \exists xA(x)
+        &\vdash B 
+        &(\exists^-,u\text{不在}\forall x(A(x)\rightarrow B), B\text{中出现})\\
+        \forall x(A(x)\rightarrow B)
+        &\vdash \exists xA(x)\rightarrow B &(\rightarrow^+)
+    \end{align*}
+\end{solution}
+\subsection*{2.  Prove the following statements}
+\begin{problem}
+\begin{equation*}
+    \vdash
+    \forall x\forall y r(x,y)
+    \rightarrow
+    \forall x r(x,x),
+\end{equation*}
+where $r$ is a binary predicate symbol.
+\end{problem}
+\begin{solution}
+    \begin{align*}
+        \forall x\forall y r(x,y)
+        &\vdash
+        \forall x\forall y r(x,y) &(\text{ref})
+        \\
+        \forall x\forall y r(x,y)
+        &\vdash
+        \forall yr(u,y) &(\forall^-)
+        \\
+        \forall yr(u,y)
+        &\vdash
+        r(u,u) &(\forall^-)
+        \\
+        \forall yr(u,y)
+        &\vdash
+        \forall x r(x,x), &(\forall^+)
+        \\
+        \forall x\forall y r(x,y)&\vdash
+        \forall x r(x,x), &(\text{trans})
+        \\
+        &\vdash
+        \forall x\forall y r(x,y)
+        \rightarrow
+        \forall x r(x,x), &(\rightarrow^+)
+    \end{align*}
+\end{solution}
+\begin{problem}
+\begin{equation*}
+    \vdash
+    \forall x A(x)\rightarrow
+    \forall x(A(x)\lor B(x))
+\end{equation*}
+\end{problem}
+\begin{solution}
+    \begin{align*}
+        \forall x A(x)&\vdash
+        \forall xA(x)&(\text{ref})\\
+        \forall x A(x)&\vdash
+        A(u)&(\forall^-)\\
+        \forall x A(x)&\vdash
+        A(u)\lor B(u)&(\lor^+)\\
+        \forall x A(x)&\vdash
+        \forall x(A(x)\lor B(x))&(\forall^+)\\
+        &\vdash
+        \forall x A(x)\rightarrow
+        \forall x(A(x)\lor B(x))&(\rightarrow^+)
+    \end{align*}
+\end{solution}
+
+\begin{problem}
+\begin{equation*}
+    \vdash
+    (\exists xA(x)\rightarrow\forall x B(x))
+    \rightarrow
+    \forall x(A(x)\rightarrow B(x))
+\end{equation*}
+\end{problem}
+\begin{solution}
+    \begin{align*}
+        \exists xA(x)\rightarrow\forall x B(x), A(u)
+        &\vdash
+        A(u) &(\text{ref})\\
+        \exists xA(x)\rightarrow\forall x B(x), A(u)
+        &\vdash
+        \exists xA(x) &(\exists^+)\\
+        \exists xA(x)\rightarrow\forall x B(x), A(u)
+        &\vdash
+        \exists xA(x)\rightarrow\forall x B(x) &(\in)\\
+        \exists xA(x)\rightarrow\forall x B(x), A(u)
+        &\vdash
+        \forall xB(x) &(\rightarrow^-)\\
+        \exists xA(x)\rightarrow\forall x B(x), A(u)
+        &\vdash
+        B(u) &(\forall^-)\\
+        \exists xA(x)\rightarrow\forall x B(x)
+        &\vdash
+        A(u)\rightarrow B(u) &(\rightarrow^+)\\
+        \exists xA(x)\rightarrow\forall x B(x)
+        &\vdash
+        \forall x(A(x)\rightarrow B(x)) &(\forall^-)\\
+        &\vdash
+        (\exists xA(x)\rightarrow\forall x B(x))
+        \rightarrow
+        \forall x(A(x)\rightarrow B(x)) &(\rightarrow^+)
+    \end{align*}
+\end{solution}
+\begin{problem}
+\begin{equation*}
+    \vdash
+    \exists y(r(y)\rightarrow\forall y r(y)),
+\end{equation*}
+where $r$ is a unary predicate symbol.
+\end{problem}
+\begin{solution}
+    \begin{align*}
+        \exists y(r(y)\rightarrow\forall y r(y))
+        &\vdash \forall y\neg(r(y)\rightarrow\forall y r(y))&(\text{1.1题结论})\\
+        \exists y(r(y)\rightarrow\forall y r(y))
+        &\vdash \neg(r(u)\rightarrow\forall y r(y))&(\forall^-)\\
+        \neg(r(u)\rightarrow\forall y r(y))
+        &\vdash r(u)\land\neg\forall yr(y)&(\text{引理2})\\
+        \exists y(r(y)\rightarrow\forall y r(y))
+        &\vdash r(u)\land\neg\forall yr(y)&(\text{trans})\\
+        \exists y(r(y)\rightarrow\forall y r(y))
+        &\vdash r(u) &(\land^-)\\
+        \exists y(r(y)\rightarrow\forall y r(y))
+        &\vdash \neg\forall yr(y)&(\land^-)\\
+        \exists y(r(y)\rightarrow\forall y r(y))
+        &\vdash \forall yr(y) &(\forall^+)\\
+        &\vdash
+        \exists y(r(y)\rightarrow\forall y r(y)) &(\neg^-)
+    \end{align*}
+\end{solution}
+\end{document}
